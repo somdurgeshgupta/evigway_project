@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   title = 'evigway-application';
   users: any;
 
-  fields = {
+  sampleformsType = {
     title: 'Simple Form',
     fields: [
       {
@@ -32,11 +32,26 @@ export class AppComponent implements OnInit {
   };
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
-    this.createForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      name: ['', [Validators.required, Validators.minLength(3)]],
-    });
+    // this.createForm = this.fb.group({
+    //   email: ['', [Validators.required, Validators.email]],
+    //   name: ['', [Validators.required, Validators.minLength(3)]],
+    // });
+
+    this.createForm = this.fb.group({})
+
+    this.sampleformsType.fields.forEach((field)=>{
+      const validations = [];
+      if(field.validations.includes('required')) {
+        validations.push(Validators.required);
+      }
+      if(field.validations.includes('email')) {
+        validations.push(Validators.email);
+      }
+
+      this.createForm.addControl(field.name, this.fb.control('', validations));
+    })
   }
+  
   ngOnInit(): void {
     this.getData();
   }

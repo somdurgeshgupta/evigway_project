@@ -3,41 +3,35 @@
   <div class="row justify-content-sm-center">
     <div class="col-sm-6">
       <form [formGroup]="createForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <label for="email">Email:</label>
-          <input type="email" id="email" formControlName="email" class="form-control" required />
-          <div *ngIf="createForm.get('email')?.invalid && createForm.get('email')?.touched">
-            <small *ngIf="createForm.get('email')?.errors?.['required']">Email is required</small>
-            <small *ngIf="createForm.get('email')?.errors?.['email']">Invalid Email Format</small>
+        <div *ngFor="let field of sampleformsType.fields" class="form-group">
+          <label [for]="field.label">{{field.label}}</label>
+          <input [type]="field.type" [id]="field.name" [formControlName]="field.name" class="form-control" required />
+          <div *ngIf="createForm.get(field.name)?.invalid && createForm.get(field.name)?.touched">
+            <small *ngIf="createForm.get(field.name)?.errors?.['required']">{{field.label}} is required</small>
+            <small *ngIf="createForm.get(field.name)?.errors?.['email']">Invalid Email Format</small>
           </div>
         </div>
-        <div class="form-group">
-          <label for="name">Name:</label>
-          <input type="text" id="name" formControlName="name" class="form-control" required />
-          <div *ngIf="createForm.get('name')?.invalid && createForm.get('name')?.touched">
-            <small *ngIf="createForm.get('name')?.errors?.['required']">Email is required</small>
-          </div>
-        </div>
-        <button class="btn btn-primary" type="submit">Submit</button>
+        
+        <button class="btn btn-primary mt-4" type="submit">Submit</button>
       </form>
+    </div>
+    <div class="col-sm-6"> 
+      <div class="table-container">
+        <table class="table table-striped table-bordered">
+          <thead>
+            <th>Email</th>
+            <th>Name</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>{{user.email}}</td>
+              <td>{{user.name}}</td>
+            </tr>
+            
+          </tbody>
+          </table>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="container">
-  <div class="table-container">
-    <table class="table table-striped">
-      <thead>
-        <th>Email</th>
-        <th>Name</th>
-      </thead>
-      <tbody>
-        <tr *ngFor="let user of users">
-          <td>{{user.email}}</td>
-          <td>{{user.name}}</td>
-        </tr>
-        
-      </tbody>
-      </table>
-  </div>
-</div>
